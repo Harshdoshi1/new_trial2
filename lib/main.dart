@@ -3,6 +3,7 @@ import 'package:new_trial2/admin_dashboard_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'login_page.dart';
+import 'home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,3 +24,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+//hello

@@ -1,0 +1,24 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+// Make sure Java 17 is being used for all Gradle tasks
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.forkOptions.executable = "${System.getenv('JAVA_HOME')}/bin/javac"
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

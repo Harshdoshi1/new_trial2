@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:new_trial2/add_customer_page.dart';
-import 'package:new_trial2/admin_placeorder.dart';
+import 'package:new_trial2/pages/add_customer_page.dart';
+import 'package:new_trial2/pages/admin_placeorder.dart';
+import 'package:new_trial2/utils/color_utils.dart';
 
 // import 'resuable_widgets.dart';
-import 'color_utils.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});

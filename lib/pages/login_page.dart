@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:new_trial2/admin_dashboard_page.dart';
+import 'package:new_trial2/pages/admin_dashboard_page.dart';
+import 'package:new_trial2/utils/color_utils.dart';
+import 'package:new_trial2/widgets/resuable_widgets.dart';
 import 'home_page.dart';
 import 'signup_page.dart';
-import 'color_utils.dart';
-import 'resuable_widgets.dart';
+
  // Import AdminOrdersPage
 
 class LoginPage extends StatefulWidget {

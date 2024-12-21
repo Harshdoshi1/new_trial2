@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'product_model.dart';
+import 'package:new_trial2/widgets/product_model.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

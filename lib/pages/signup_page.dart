@@ -1,9 +1,10 @@
 
-import 'resuable_widgets.dart';
-import 'color_utils.dart';
+import 'package:new_trial2/services/auth_service.dart';
+import 'package:new_trial2/utils/color_utils.dart';
+import 'package:new_trial2/widgets/resuable_widgets.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'auth_service.dart';
 import 'login_page.dart';
 
 class SignupPage extends StatefulWidget {

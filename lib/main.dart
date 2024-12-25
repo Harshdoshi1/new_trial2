@@ -3,7 +3,6 @@ import 'package:new_trial2/pages/admin_dashboard_page.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'pages/login_page.dart';
-import 'pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Firebase App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home:const LoginPage(),
+      home:const AdminDashboard(),
       debugShowCheckedModeBanner: false,
     );
   }

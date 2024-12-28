@@ -22,11 +22,36 @@ class DashboardScreen extends StatelessWidget {
             return Obx(() {
               return ListView.builder(
                 itemCount: orderController.orders.length,
-                itemBuilder: (context, index) {
-                  final order = orderController.orders[index];
-                  return ListTile(
-                    title: Text('Order by: ${order['customerName']}'),
-                    subtitle: Text('Order date: ${order['orderDate'].toString()}'),
+                itemBuilder: (context, orderIndex) {
+                  final order = orderController.orders[orderIndex];
+                  return Card(
+                    margin: EdgeInsets.all(8.0),
+                    child: ExpansionTile(
+                      title: Text('Order by: ${order['customerName']}'),
+                      subtitle: Text('Order date: ${order['orderDate'].toString()}'),
+                      children: [
+                        // Task list for each order
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: order['tasks'].length,
+                          itemBuilder: (context, taskIndex) {
+                            final task = order['tasks'][taskIndex];
+                            return Obx(() {
+                              return ListTile(
+                                title: Text(task['taskName']),
+                                trailing: Checkbox(
+                                  value: task['completed'].value, // Ensure the checkbox reflects RxBool
+                                  onChanged: (_) {
+                                    // Update the completion status
+                                    orderController.toggleTaskCompletion(orderIndex, taskIndex);
+                                  },
+                                ),
+                              );
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   );
                 },
               );

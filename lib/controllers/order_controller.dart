@@ -4,6 +4,11 @@ import 'package:get/get.dart';
 class OrderController extends GetxController {
   RxList<Map<String, dynamic>> orders = <Map<String, dynamic>>[].obs;
 
+  // Predefined tasks for each order
+  final List<String> taskList = [
+    "Design", "Modeling", "Casting", "Finishing", "Inspection", "Packaging"
+  ];
+
   // Fetch orders from Firestore
   Future<void> fetchOrders() async {
     try {
@@ -20,11 +25,12 @@ class OrderController extends GetxController {
         String customerName = customerDoc['username']; // Customer name is in the 'username' field
         Timestamp orderDate = doc['orderDate']; // Order date is a Timestamp field in Firestore
 
-        // Add order to the list
+        // Add order to the list with predefined tasks
         fetchedOrders.add({
           'id': doc.id,
           'customerName': customerName,
           'orderDate': orderDate.toDate(), // Convert Timestamp to DateTime
+          'tasks': taskList.map((task) => {'taskName': task, 'completed': false.obs}).toList(),
         });
       }
 
@@ -45,5 +51,12 @@ class OrderController extends GetxController {
     } catch (e) {
       print('Error fetching orders: $e');
     }
+  }
+
+  // Mark task as completed for a specific order
+  void toggleTaskCompletion(int orderIndex, int taskIndex) {
+    // Toggle the completion status of the task
+    bool currentStatus = orders[orderIndex]['tasks'][taskIndex]['completed'].value;
+    orders[orderIndex]['tasks'][taskIndex]['completed'].value = !currentStatus; // Toggle manually
   }
 }

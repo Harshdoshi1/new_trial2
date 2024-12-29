@@ -16,17 +16,17 @@ class OrderController extends GetxController {
         String customerName = customerDoc['username'];
         Timestamp orderDate = doc['orderDate'];
 
-        // Convert tasks to RxMap instead of a regular Map
         var tasks = (doc['tasks'] as List).map((task) => {
           'name': task['name'],
-          'completed': RxBool(task['completed'] as bool), // Create RxBool here
-        }.obs).toList(); // Make each task observable
+          'completed': RxBool(task['completed'] as bool),
+        }.obs).toList();
 
         fetchedOrders.add({
           'id': doc.id,
           'customerName': customerName,
           'orderDate': orderDate.toDate(),
           'tasks': tasks,
+          'status': doc['status'], // Include status in fetched data
         });
       }
 
@@ -46,17 +46,16 @@ class OrderController extends GetxController {
     try {
       // Get the current task
       var task = orders[orderIndex]['tasks'][taskIndex];
+      var orderId = orders[orderIndex]['id'];
       
       // Toggle the completion status
       task['completed'].value = !task['completed'].value;
       
       // Get the updated completion status
       bool updatedCompletionStatus = task['completed'].value;
-      
-      var orderId = orders[orderIndex]['id'];
       var taskName = task['name'];
 
-      // Update Firestore
+      // Update task in Firestore
       await FirebaseFirestore.instance.collection('orders').doc(orderId).update({
         'tasks': FieldValue.arrayRemove([
           {
@@ -74,8 +73,36 @@ class OrderController extends GetxController {
           },
         ]),
       });
+
+      // Check if all tasks are completed
+      bool allTasksCompleted = true;
+      var tasks = orders[orderIndex]['tasks'] as List;
+      
+      for (var t in tasks) {
+        if (!t['completed'].value) {
+          allTasksCompleted = false;
+          break;
+        }
+      }
+
+      // Update order status if all tasks are completed
+      if (allTasksCompleted) {
+        await FirebaseFirestore.instance.collection('orders').doc(orderId).update({
+          'status': 'completed'
+        });
+        
+        // Update local state
+        orders[orderIndex]['status'] = 'completed';
+      }
+
     } catch (e) {
       print('Error updating task completion status in Firestore: $e');
     }
+  }
+
+  // Helper method to check order completion status
+  bool isOrderCompleted(int orderIndex) {
+    var tasks = orders[orderIndex]['tasks'] as List;
+    return tasks.every((task) => task['completed'].value);
   }
 }

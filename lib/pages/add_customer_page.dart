@@ -62,49 +62,61 @@ class _AddCustomerScreenState extends State<AddCustomerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Customer'),
-        backgroundColor: Colors.teal,
+        title: const Text('Customer Page'),
+        backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(labelText: 'Username'),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'Phone Number'),
-              keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _addressController,
-              decoration: const InputDecoration(labelText: 'Address'),
-            ),
+            _buildSettingItem('Username', _usernameController),
+            _buildSettingItem('Email', _emailController, keyboardType: TextInputType.emailAddress),
+            _buildSettingItem('Phone Number', _phoneController, keyboardType: TextInputType.phone),
+            _buildSettingItem('Address', _addressController),
             const SizedBox(height: 20),
             _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : ElevatedButton(
                     onPressed: _addCustomer,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal,
+                      backgroundColor: Colors.deepPurple,
                       minimumSize: const Size(double.infinity, 50),
                     ),
-                    child: Text('Add Customer'),
+                    child: const Text('Add Customer'),
                   ),
           ],
         ),
       ),
+    );
+  }
+
+  // Reusable widget for setting-like items
+  Widget _buildSettingItem(String label, TextEditingController controller, {TextInputType keyboardType = TextInputType.text}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 5),
+        TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[200],
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide.none,
+            ),
+            hintText: 'Enter $label',
+            contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          ),
+          keyboardType: keyboardType,
+        ),
+        const SizedBox(height: 15),
+      ],
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:new_trial2/pages/add_customer_page.dart';
 import 'package:new_trial2/pages/admin_placeorder.dart';
 import 'package:new_trial2/pages/progress_screen.dart';
+import 'package:new_trial2/pages/setting_page.dart';
 import 'package:new_trial2/pages/task_page.dart';
 import 'package:new_trial2/utils/color_utils.dart';
 
@@ -107,100 +108,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 }
 
-// Dashboard Page (placeholder)
-class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Column(
-                children: [
-                  Text(
-                    'Dashboard Overview',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      DashboardMetric(label: "Total Orders", value: "150"),
-                      DashboardMetric(label: "Users", value: "200"),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 // Placeholder page for Orders
 
 
 // Placeholder page for Add Order
-class AddOrderPage extends StatelessWidget {
-  const AddOrderPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Add Order Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-// Placeholder page for Tasks
-class TasksPage extends StatelessWidget {
-  const TasksPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Tasks Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-// Placeholder page for Settings
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Settings Page',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
 class DashboardMetric extends StatelessWidget {
   final String label;
   final String value;

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:new_trial2/pages/add_customer_page.dart';
 import 'package:new_trial2/pages/admin_placeorder.dart';
+import 'package:new_trial2/pages/progress_screen.dart';
+import 'package:new_trial2/pages/task_page.dart';
 import 'package:new_trial2/utils/color_utils.dart';
 
 // import 'resuable_widgets.dart';
@@ -17,11 +19,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    DashboardPage(), // Dashboard Page
-     // Orders Page
-    AdminPlaceOrderPage(),// Add Order Page
-    AddCustomerScreen(), // Tasks Page
-    SettingsPage(),
+    ProgressScreen(), // Dashboard/Progress Page
+    AdminPlaceOrderPage(), // Add Order Page
+    AddCustomerScreen(), // Add Customer Page
+    TaskPage(), // Tasks Page
     SettingsPage() // Settings Page
   ];
 

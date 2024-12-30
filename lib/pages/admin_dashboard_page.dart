@@ -1,13 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:new_trial2/pages/add_customer_page.dart';
 import 'package:new_trial2/pages/admin_placeorder.dart';
+import 'package:new_trial2/pages/login_page.dart';
 import 'package:new_trial2/pages/progress_screen.dart';
 import 'package:new_trial2/pages/setting_page.dart';
 import 'package:new_trial2/pages/task_page.dart';
+
 import 'package:new_trial2/utils/color_utils.dart';
 
-// import 'resuable_widgets.dart';
+
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -24,7 +28,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     AdminPlaceOrderPage(), // Add Order Page
     AddCustomerScreen(), // Add Customer Page
     TaskPage(), // Tasks Page
-    SettingsPage() // Settings Page
+    SettingsPage(), // Settings Page
   ];
 
   void _onItemTapped(int index) {
@@ -32,6 +36,22 @@ class _AdminDashboardState extends State<AdminDashboard> {
       _selectedIndex = index;
     });
   }
+
+  void _onDrawerItemTapped(int index) {
+    Navigator.pop(context); // Close the drawer
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  void _logout() async {
+  await FirebaseAuth.instance.signOut(); // Sign out from Firebase
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const LoginPage()), // Navigate to the login page
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +74,88 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ),
         ),
       ),
+      drawer: Drawer(
+        child: Container(
+          color: hexStringToColor("6D4C41"), // Darker shade for the entire drawer
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      hexStringToColor("5D4037"), // Darker shade
+                      hexStringToColor("4E342E"),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Admin Menu',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.dashboard, color: Colors.white),
+                title: const Text(
+                  'Dashboard',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () => _onDrawerItemTapped(0),
+              ),
+              ListTile(
+                leading: const Icon(Icons.shopping_cart, color: Colors.white),
+                title: const Text(
+                  'Add Orders',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () => _onDrawerItemTapped(1),
+              ),
+              ListTile(
+                leading: const Icon(Icons.add_circle, color: Colors.white),
+                title: const Text(
+                  'Add Customer',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () => _onDrawerItemTapped(2),
+              ),
+              ListTile(
+                leading: const Icon(Icons.task, color: Colors.white),
+                title: const Text(
+                  'Tasks',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () => _onDrawerItemTapped(3),
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings, color: Colors.white),
+                title: const Text(
+                  'Settings',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () => _onDrawerItemTapped(4),
+              ),
+              const Divider(color: Colors.white), // Separator
+              ListTile(
+                leading: const Icon(Icons.logout, color: Colors.white),
+                title: const Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: _logout, // Call the logout function
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           Container(
@@ -63,8 +165,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
               gradient: LinearGradient(
                 colors: [
                   hexStringToColor("E7C6A5"),
-                  hexStringToColor("E7C6A5"), // Customize the gradient colors
-                  hexStringToColor("F4DBD8"),
                   hexStringToColor("F4DBD8"),
                 ],
                 begin: Alignment.topCenter,
@@ -104,43 +204,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ),
         ],
       ),
-    );
-  }
-}
-
-
-// Placeholder page for Orders
-
-
-// Placeholder page for Add Order
-class DashboardMetric extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const DashboardMetric({super.key, required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-      ],
     );
   }
 }

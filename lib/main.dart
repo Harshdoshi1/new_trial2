@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Firebase App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home:const AdminDashboard(),
+      home:const LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -59,10 +59,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-        backgroundColor: Colors.teal,
-      ),
+      
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -76,10 +73,11 @@ class SettingsPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () => _generateOrderReport(context),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.teal,
+                backgroundColor: const Color.fromARGB(255, 163, 36, 36),
                 minimumSize: const Size(double.infinity, 50),
               ),
-              child: const Text('Download Orders Report (PDF)'),
+              child: const Text('Download Orders Report (PDF)', style: TextStyle(
+                        color: Colors.white),),
             ),
           ],
         ),

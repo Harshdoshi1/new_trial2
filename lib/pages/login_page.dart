@@ -6,7 +6,6 @@ import 'package:new_trial2/widgets/resuable_widgets.dart';
 import 'home_page.dart';
 import 'signup_page.dart';
 
- // Import AdminOrdersPage
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,6 +17,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _resetEmailController = TextEditingController();
+  final _verificationCodeController = TextEditingController();
+  final _newPasswordController = TextEditingController();
 
   Future<void> _login() async {
     try {
@@ -26,20 +28,76 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       );
 
-      // Check if the email belongs to admin
       if (_emailController.text.trim() == "vagadiashyama@gmail.com") {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const AdminDashboard()), // Navigate to AdminOrdersPage
+          MaterialPageRoute(builder: (context) => const AdminDashboard()),
         );
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()), // Navigate to HomePage
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
       }
     } catch (e) {
-      print('Login failed: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login failed: ${e.toString()}')),
+      );
+    }
+  }
+
+  void _showForgotPasswordDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reset Password'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _resetEmailController,
+                decoration: const InputDecoration(
+                  labelText: 'Enter your email',
+                  hintText: 'example@email.com',
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: _sendPasswordResetEmail,
+            child: const Text('Send Reset Link'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _sendPasswordResetEmail() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: _resetEmailController.text.trim(),
+      );
+      Navigator.pop(context); // Close the dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password reset link sent to your email'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -52,12 +110,10 @@ class _LoginPageState extends State<LoginPage> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-             // Customize the gradient colors
               hexStringToColor("E7C6A5"),
               hexStringToColor("F4DBD8"),
               hexStringToColor("F4DBD8"),
               hexStringToColor("E7C6A5"),
-               // Pale rose gold
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -70,18 +126,28 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: <Widget>[
                 logoWidget("assets/images/logo4.png"),
-                const SizedBox(
-                  height: 30,
+                const SizedBox(height: 30),
+                reusableTextField(
+                    "Enter UserName", Icons.person_outline, false, _emailController),
+                const SizedBox(height: 20),
+                reusableTextField(
+                    "Enter Password", Icons.lock_outline, true, _passwordController),
+                const SizedBox(height: 5),
+                // Add Forgot Password link
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: _showForgotPasswordDialog,
+                    child: const Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 9, 9, 9),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
                 ),
-                reusableTextField("Enter UserName", Icons.person_outline, false, _emailController),
-                const SizedBox(
-                  height: 20,
-                ),
-                reusableTextField("Enter Password", Icons.lock_outline, true, _passwordController),
-                const SizedBox(
-                  height: 5,
-                ),
-                signInSignUpButton(context, true, _login), // Using _login method for sign-in
+                signInSignUpButton(context, true, _login),
                 signUpOption()
               ],
             ),
@@ -115,5 +181,15 @@ class _LoginPageState extends State<LoginPage> {
         )
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _resetEmailController.dispose();
+    _verificationCodeController.dispose();
+    _newPasswordController.dispose();
+    super.dispose();
   }
 }

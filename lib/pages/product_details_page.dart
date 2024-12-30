@@ -108,7 +108,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         horizontal: 24, vertical: 12),
                     textStyle: const TextStyle(fontSize: 18),
                   ),
-                  child: const Text("Place Order"),
+                  child: const Text(
+                    "Place Order",
+                    style: TextStyle(
+                        color: Colors.white), // Set text color to white
+                  ),
                 ),
               ),
             ],
@@ -118,7 +122,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     );
   }
 
-  void _showPlaceOrderDialog(BuildContext context, QueryDocumentSnapshot product) {
+  void _showPlaceOrderDialog(
+      BuildContext context, QueryDocumentSnapshot product) {
     String? selectedCustomer;
     TextEditingController _advancePaymentController = TextEditingController();
     int quantity = 1;
@@ -133,7 +138,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             children: [
               // Customer Selection Dropdown
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('customers').snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection('customers')
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return const Center(child: CircularProgressIndicator());
@@ -193,12 +200,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 try {
                   final advancePayment =
                       int.tryParse(_advancePaymentController.text) ?? 0;
-                  final mandatoryAmount = product['mandatoryAdvanceAmount'] as int;
+                  final mandatoryAmount =
+                      product['mandatoryAdvanceAmount'] as int;
                   final totalPrice = product['price'] as int;
 
                   if (selectedCustomer == null) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please select a customer.")),
+                      const SnackBar(
+                          content: Text("Please select a customer.")),
                     );
                     return;
                   }
@@ -234,7 +243,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     'status': "pending",
                   }).then((value) {
                     // Update Product Quantity in Firestore
-                    FirebaseFirestore.instance.collection('products').doc(product.id).update({
+                    FirebaseFirestore.instance
+                        .collection('products')
+                        .doc(product.id)
+                        .update({
                       'quantity': FieldValue.increment(-quantity),
                     });
 
@@ -249,7 +261,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   });
                 } catch (error) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("An unexpected error occurred: $error")),
+                    SnackBar(
+                        content: Text("An unexpected error occurred: $error")),
                   );
                 }
               },
